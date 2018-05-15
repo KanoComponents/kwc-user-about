@@ -7,5 +7,9 @@
   "description": "",
   "main": "kwc-user-about.html",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "kwc-button": "KanoComponents/kwc-button#2.1.0",
+    "kwc-icons": "KanoComponents/kwc-icons#^1.9.0"
+  }
 }
