@@ -1,0 +1,36 @@
+<link rel="import" href="../../polymer/polymer-element.html">
+
+<dom-module id="kwc-user-about">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <h2>Hello [[prop1]]!</h2>
+    </template>
+
+    <script>
+        /**
+         * `kwc-user-about`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class KwcUserAbout extends Polymer.Element {
+            static get is() { return 'kwc-user-about'; }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'kwc-user-about',
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(KwcUserAbout.is, KwcUserAbout);
+    </script>
+</dom-module>
