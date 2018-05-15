@@ -1,0 +1,11 @@
+{
+  "name": "kwc-user-about",
+  "homepage": "https://github.com/denisdani/kwc-user-about",
+  "authors": [
+    "Kano Computing"
+  ],
+  "description": "",
+  "main": "kwc-user-about.html",
+  "license": "MIT",
+  "private": true
+}
