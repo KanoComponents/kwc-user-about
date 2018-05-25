@@ -1,13 +1,287 @@
-<link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/kwc-button/kwc-soft-button.html">
+<link rel="import" href="../../bower_components/kwc-icons/kwc-icons.html">
+<link rel="import" href="../../bower_components/kwc-style/kwc-style.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
 
 <dom-module id="kwc-user-about">
     <template>
         <style>
             :host {
                 display: block;
+                margin: 0 auto;
+                max-width: var(--content-width);
+            }
+            :host * {
+                box-sizing: border-box;
+            }
+            .content {
+                @apply --layout-horizontal;
+                @apply --layout-wrap;
+                @apply --layout-center;
+                @apply --layout-justified;
+                min-height: calc(100vh - 300px);
+            }
+            /*TODO: Use breakpoint variable*/
+            @media all and (max-width: 680px) {
+                .content {
+                    @apply --layout-around-justified;
+                }
+            }
+            .loading {
+                width: 100%;
+                min-height: 30vh;
+                text-align: center;
+            }
+            .spinner {
+                margin-top: 150px;
+            }
+
+            .about-page {
+                @apply --layout-vertical;
+                width: 100%;
+                font-family: 'bariol', sans-serif;
+                color: var(--color-chateau, #414a51);
+            }
+            .about-page .section {
+                width: 100%;
+
+                @apply --layout-vertical;
+                @apply --layout-center;
+
+                margin-bottom: 20px;
+            }
+            .about-page .bio-text {
+                margin: 0px 50px;
+                font-size: 18px;
+                text-align: center;
+            }
+            .about-page .bio-text pre {
+                text-align: left;
+            }
+            .save-button {
+                @apply --kano-round-button;
+                background-color: var(--color-kano-orange, #ff6900);
+            }
+            .save-button:hover {
+                background-color: #c95924;
+            }
+            kwc-soft-button, .save-button {
+                margin-top: 20px;
+            }
+            .about-page h2 {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .about-page .backdrop {
+                @apply --layout-self-stretch;
+                background: var(--color-porcelain, #e9ebec);
+                border-radius: 6px;
+            }
+            .stats {
+                padding: 25px;
+            }
+            .stats-tile {
+                background: #fff;
+                border-radius: 6px;
+                @apply --layout-self-stretch;
+                @apply --layout-vertical;
+                padding: 25px 0 15px 0;
+            }
+            .stats-content {
+                @apply --layout-horizontal;
+                @apply --layout-center-justified;
+                @apply --layout-center;
+                margin-bottom: 10px;
+            }
+            .stats-content iron-icon {
+                margin-right: 5px;
+                width: 24px;
+                height: 24px;
+            }
+            .stats-content .value {
+                line-height: 30px;
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .stats-label {
+                text-align: center;
+                font-weight: bold;
+                color: var(--color-grey, #9fa4a8);
+                text-transform: uppercase;
+                font-size: 14px;
+            }
+
+            .progress {
+                @apply --layout-horizontal;
+                @apply --layout-wrap;
+                padding: 25px;
+                margin-bottom: 50px;
+            }
+            .progress-tile {
+                background: #fff;
+                border-radius: 6px;
+                @apply --layout-horizontal;
+                padding: 10px;
+                margin: 10px 15px;
+            }
+            .progress-tile iron-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .progress-content {
+                @apply --layout-vertical;
+                margin-left: 10px;
+                width: 100%;
+            }
+            .progress-title {
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            .progress-bar {
+                @apply --layout-self-stretch;
+                background: var(--color-porcelain, #e9ebec);
+                width: calc(100% - 10px);
+                height: 10px;
+                border-radius: 10px;
+                margin-top: 5px;
+                overflow: hidden;
+            }
+            .progress-bar-gauge {
+                background-color: red;
+                width: 50%;
+                height: 100%;
+            }
+
+            paper-textarea {
+                width: calc(100% - 100px);
+                border: 1px solid #a2a6aa;
+                border-radius: 6px;
+                padding: 10px 20px;
+                min-height: 100px;
+
+                --paper-input-container-input: {
+                    font-family: 'bariol', sans-serif;
+                    color: var(--color-chateau, #414a51);
+                    font-size: 18px;
+                    line-height: 1.5;
+                }
+
+                outline: none;
+
+                --paper-input-container-underline: {
+                    display: none;
+                };
+                --paper-input-container-underline-focus: {
+                    display: none;
+                };
+                --paper-input-container-underline-disabled: {
+                    display: none;
+                };
+            }
+
+            paper-textarea.focused {
+                border: 1px solid var(--color-orange, #ff6a00);
+            }
+            @media all and (max-width: 680px) {
+                .stats {
+                    @apply --layout-vertical;
+                }
+                .stats-tile {
+                    @apply --layout-self-stretch;
+                    margin: 10px 15px;
+                }
+                .progress-tile {
+                    width: 100%;
+                }
+            }
+            @media all and (min-width: 681px) {
+                .stats {
+                    @apply --layout-horizontal;
+                }
+                .stats-tile {
+                    margin: 0px 15px;
+                    width: 170px;
+                }
+            }
+            @media all and (min-width: 681px) and (max-width: 980px) {
+                .progress-tile {
+                    width: calc(50% - 30px);
+                }
+            }
+            @media all and (min-width: 981px) {
+                .progress-tile {
+                    width: calc(33% - 30px);
+                }
             }
         </style>
-        <h2>Hello [[prop1]]!</h2>
+        
+        <div class="content">
+            <template is="dom-if" if="[[fetchingSelectedUser]]">
+                <div class="loading">
+                    <paper-spinner-lite class="spinner" active></paper-spinner-lite>
+                </div>
+            </template>
+            <template is="dom-if" if="[[!fetchingSelectedUser]]">
+                <div class="about-page">
+                    <div class="section">
+                        <h2>Bio</h2>
+                        <template is="dom-if" if="[[!editing]]">
+                            <marked-element class="bio-text" markdown="[[_getBioText(user.profile.bio, cachedUsers.*)]]">
+                                <div slot="markdown-html"></div>
+                            </marked-element>
+                            <kwc-soft-button on-tap="_editTapped" hidden$="[[!allowEditBio]]">Edit</kwc-soft-button>
+                        </template>
+                        <template is="dom-if" if="[[editing]]">
+                            <paper-textarea
+                                id="bio-input"
+                                value="[[user.profile.bio]]"
+                                placeholder="Write up your bio..."
+                                no-label-float
+                                focused="{{inputFocused}}"
+                                class$="[[_getInputClass(inputFocused)]]"></paper-textarea>
+                            <button class="save-button" on-tap="_saveTapped">Save</button>
+                        </template>
+                    </div>
+
+                    <div class="section">
+                        <h2>Stats</h2>
+                        <div class="backdrop stats">
+                            <template is="dom-repeat" items="[[stats]]">
+                                <div class="stats-tile">
+                                    <div class="stats-content">
+                                        <iron-icon icon="[[item.icon]]" style$="color: [[item.color]];"></iron-icon>
+                                        <div class="value">[[item.value]]</div>
+                                    </div>
+                                    <div class="stats-label">[[item.label]]</div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Progress</h2>
+                        <div class="backdrop progress">
+                            <template is="dom-repeat" items="[[progressItems]]" as="item">
+                                <div class="progress-tile">
+                                    <iron-icon src="[[item.icon]]"></iron-icon>
+                                    <div class="progress-content">
+                                        <div class="progress-title">[[item.label]]</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-gauge" style$="background-color: [[item.color]]; width: [[item.percentage]]%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
     </template>
 
     <script>
@@ -19,15 +293,253 @@
          * @polymer
          * @demo demo/index.html
          */
-        class KwcUserAbout extends Polymer.Element {
+        class KwcUserAbout extends Kano.KitApp.Store.StateReceiver(Polymer.Element) {
             static get is() { return 'kwc-user-about'; }
             static get properties() {
                 return {
-                    prop1: {
-                        type: String,
-                        value: 'kwc-user-about',
+                    /**
+                     * Flags if there is an ongoing request for shares data.
+                     * @type {Boolean}
+                     */
+                    fetchingSelectedUser: {
+                        type: Boolean,
+                        observer: 'observeFetching',
+                        linkState: 'fetchingAuthenticatedUser',
+                    },
+                    /**
+                     * User object.
+                     * @type {Object}
+                     */
+                    user: {
+                        type: Object,
+                        value: null,
+                    },
+                    /**
+                     * User progress.
+                     * @type {Object}
+                     */
+                    progress: {
+                        type: Object,
+                        value: null,
+                    },
+                    stats: {
+                        type: Array,
+                        computed: '_computeStats(user.profile.*, staffPicks)'
+                    },
+                    progressItems: {
+                        type: Array,
+                        computed: '_computeProgressItems(user.profile.*, progress.*)'
+                    },
+                    allowEditBio: {
+                        type: Boolean,
+                        value: false
+                    },
+                    staffPicks: {
+                        type: Number,
+                        value: null
+                    },
+                };
+            }
+            static get observers() {
+                return [
+                    '_autoEditBio(user.profile.bio, allowEditBio)'
+                ]
+            }
+
+            connectedCallback () {
+                super.connectedCallback();
+
+                /** Resize loading container when the window resizes */
+                this.resizeLoading = this.resizeLoading.bind(this);
+                window.addEventListener('resize', this.resizeLoading);
+
+                this.editing = false;
+            }
+
+            disconnectedCallback () {
+                window.removeEventListener('resize', this.resizeLoading);
+            }
+
+            observeFetching(newValue, oldValue) {
+                this.resizeLoading();
+            }
+
+            /**
+             * Recalculates the loading container to be the same size as the
+             * wrapper content so when changing pages there is as little
+             * jumping as possible. Also recalculates the position for
+             * loading spinner
+             */
+            resizeLoading () {
+                let content = Polymer.dom(this.root).querySelector('.content'),
+                    loading = Polymer.dom(this.root).querySelector('.loading'),
+                    spinner = Polymer.dom(this.root).querySelector('.spinner');
+
+                if (content && loading) {
+                    let currentHeight = content.offsetHeight;
+                    loading.style.height = `${currentHeight}px`;
+
+                    /**
+                     * Make sure the spinner will be always at least 150
+                     * pixels from the top
+                     */
+                    let spinnerOffset = Math.max(window.pageYOffset, 150);
+                    /**
+                     * Make sure the spinner will always be at least 150
+                     * pixels away from the bottom
+                     */
+                    spinnerOffset = Math.min(spinnerOffset, currentHeight - 150);
+                    spinner.style.marginTop = `${spinnerOffset}px`;
+                }
+            }
+
+            _computeStats (userProfile, staffPicks) {
+                let badges = {
+                        icon: 'kwc-ui-icons:medal',
+                        color: '#ff6a00',
+                        label: 'medals',
+                        value: '-'
+                    },
+                    followers = {
+                        icon: 'kwc-ui-icons:followers',
+                        color: '#87c53f',
+                        label: 'followers',
+                        value: '-'
+                    },
+                    picks = {
+                        icon: 'kwc-ui-icons:staff-pick',
+                        color: '#ffc100',
+                        label: 'staff picks',
+                        value: '-'
+                    },
+                    shares = {
+                        icon: 'kwc-icons:world',
+                        color: '#1093f5',
+                        label: 'shares',
+                        value: '-'
+                    };
+
+                if (userProfile && userProfile.base) {
+                    badges.value = userProfile.base.stats.computed.num_offline_badges;
+                    followers.value = userProfile.base.followers.length;
+                    shares.value = userProfile.base.stats.computed.online_shares;
+                }
+
+                if (Number.isInteger(staffPicks)) {
+                    picks.value = staffPicks;
+                }
+
+                return [badges, followers, picks, shares];
+            }
+
+            _editTapped () {
+                this.editing = true;
+            }
+
+            _saveTapped () {
+                this.editing = false;
+                USER_ACTIONS.updateBio(this.user, this.shadowRoot.querySelector('#bio-input').value);
+            }
+
+            _computeProgressItems (userProfile, progress) {
+                let categories = {
+                    kanoCode: {
+                        icon: '/node_modules/kit-app-ui/assets/icons/progress/kano-code.svg',
+                        color: '#ffc100',
+                        label: 'Kano Code',
+                        percentage: 0
+                    },
+                    pixelKit: {
+                        icon: '/node_modules/kit-app-ui/assets/icons/progress/pixel-kit.svg',
+                        color: '#fe8412',
+                        label: 'Pixel Kit',
+                        percentage: 0
+                    },
+                    motionSensor: {
+                        icon: '/node_modules/kit-app-ui/assets/icons/progress/motion-sensor.svg',
+                        color: '#eb4734',
+                        label: 'Motion Sensor',
+                        percentage: 0
+                    },
+                    makeArt: {
+                        icon: '/node_modules/kit-app-ui/assets/icons/progress/make-art.svg',
+                        color: '#fe8412',
+                        label: 'Make Art',
+                        percentage: 0
+                    },
+                    makeSnake: {
+                        icon: '/node_modules/kit-app-ui/assets/icons/progress/make-snake.svg',
+                        color: '#e85c5a',
+                        label: 'Make Snake',
+                        percentage: 0
+                    },
+                    makeMinecraft: {
+                        icon: '/node_modules/kit-app-ui/assets/icons/progress/hack-minecraft.svg',
+                        color: '#89cb41',
+                        label: 'Hack Minecraft',
+                        percentage: 0
+                    },
+                    terminalQuest: {
+                        icon: '/node_modules/kit-app-ui/assets/icons/progress/terminal-quest.svg',
+                        color: '#bc1450',
+                        label: 'Terminal Quest',
+                        percentage: 0
+                    },
+                    makePong: {
+                        icon: '/node_modules/kit-app-ui/assets/icons/progress/make-pong.svg',
+                        color: '#878787',
+                        label: 'Make Pong',
+                        percentage: 0
                     }
                 };
+
+                if (userProfile && userProfile.base) {
+                    let legacyProgress = userProfile.base.legacyProgress;
+
+                    categories.makeArt.percentage = legacyProgress['kano-draw'].percentage;
+                    categories.makeSnake.percentage = legacyProgress['make-snake'].percentage;
+                    categories.makeMinecraft.percentage = legacyProgress['make-minecraft'].percentage;
+                    categories.makePong.percentage = legacyProgress['make-pong'].percentage;
+                    categories.terminalQuest.percentage = legacyProgress['linux-story'].percentage;
+                }
+
+                if (progress && progress.base) {
+                    [{source: progress.base['badges-vanilla'].badges, target: categories.kanoCode, max: 4},
+                        {source: progress.base['badges-pixel-kit'].badges, target: categories.pixelKit, max: 7},
+                        {source: progress.base['badges-motion-sensor'].badges, target: categories.motionSensor, max: 5}
+                    ].forEach((spec) => {
+                        let doneCount = spec.source.reduce((sum, badge) => {
+                            if (badge.unlocked) {
+                                return sum + 1;
+                            }
+
+                            return sum;
+                        }, 0);
+
+                        spec.target.percentage = Math.min((doneCount / spec.max) * 100, 100);
+                    });
+                }
+
+                return Object.keys(categories).map(key => categories[key]);
+            }
+
+            _getInputClass(focused) {
+                return focused ? 'focused' : '';
+            }
+
+            _getBioText (bio) {
+                if (!bio || bio === '') {
+                    return `User has no bio.`;
+                }
+
+                return bio;
+            }
+
+            _autoEditBio (bio, allowEditBio) {
+                /* If the user's bio is empty, open the editor by default. */
+                if (bio === '' && allowEditBio) {
+                    this.editing = true;
+                }
             }
         }
 
