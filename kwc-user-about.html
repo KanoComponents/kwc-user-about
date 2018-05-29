@@ -1,12 +1,12 @@
-<link rel="import" href="../../polymer/polymer-element.html">
-<link rel="import" href="../../polymer/lib/mixins/gesture-event-listeners.html">
-<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="../../kwc-button/kwc-soft-button.html">
-<link rel="import" href="../../kwc-icons/kwc-icons.html">
-<link rel="import" href="../../kwc-style/kwc-style.html">
-<link rel="import" href="../../paper-input/paper-textarea.html">
-<link rel="import" href="../../marked-element/marked-element.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../kwc-button/kwc-soft-button.html">
+<link rel="import" href="../kwc-icons/kwc-icons.html">
+<link rel="import" href="../kwc-style/kwc-style.html">
+<link rel="import" href="../paper-input/paper-textarea.html">
+<link rel="import" href="../marked-element/marked-element.html">
 
 <dom-module id="kwc-user-about">
     <template>
@@ -221,17 +221,17 @@
         </style>
         
         <div class="content">
-            <template is="dom-if" if="[[fetchingSelectedUser]]">
+            <template is="dom-if" if="[[loading]]">
                 <div class="loading">
                     <paper-spinner-lite class="spinner" active></paper-spinner-lite>
                 </div>
             </template>
-            <template is="dom-if" if="[[!fetchingSelectedUser]]">
+            <template is="dom-if" if="[[!loading]]">
                 <div class="about-page">
                     <div class="section">
                         <h2>Bio</h2>
                         <template is="dom-if" if="[[!editing]]">
-                            <marked-element class="bio-text" markdown="[[_getBioText(user.profile.bio, cachedUsers.*)]]">
+                            <marked-element class="bio-text" markdown="[[_getBioText(user.profile.bio)]]">
                                 <div slot="markdown-html"></div>
                             </marked-element>
                             <kwc-soft-button on-tap="_editTapped" hidden$="[[!allowEditBio]]">Edit</kwc-soft-button>
@@ -293,7 +293,7 @@
          * @polymer
          * @demo demo/index.html
          */
-        class KwcUserAbout extends Kano.KitApp.Store.StateReceiver(Polymer.Element) {
+        class KwcUserAbout extends Polymer.Element {
             static get is() { return 'kwc-user-about'; }
             static get properties() {
                 return {
@@ -301,10 +301,10 @@
                      * Flags if there is an ongoing request for shares data.
                      * @type {Boolean}
                      */
-                    fetchingSelectedUser: {
+                    loading: {
                         type: Boolean,
                         observer: 'observeFetching',
-                        linkState: 'fetchingAuthenticatedUser',
+                        value: false,
                     },
                     /**
                      * User object.
@@ -324,20 +324,28 @@
                     },
                     stats: {
                         type: Array,
-                        computed: '_computeStats(user.profile.*, staffPicks)'
+                        computed: '_computeStats(user.profile.*, staffPicks)',
                     },
                     progressItems: {
                         type: Array,
-                        computed: '_computeProgressItems(user.profile.*, progress.*)'
+                        computed: '_computeProgressItems(user.profile.*, progress.*)',
                     },
                     allowEditBio: {
                         type: Boolean,
-                        value: false
+                        value: false,
                     },
                     staffPicks: {
                         type: Number,
-                        value: null
+                        value: null,
                     },
+                    editing: {
+                        type: Boolean,
+                        value: false,
+                    },
+                    assetsPath: {
+                        type: String,
+                        value: '',
+                    }
                 };
             }
             static get observers() {
@@ -393,6 +401,10 @@
                 }
             }
 
+            _getAsset(path) {
+                return `${this.assetsPath}${path}`;
+            }
+
             _computeStats (userProfile, staffPicks) {
                 let badges = {
                         icon: 'kwc-ui-icons:medal',
@@ -419,7 +431,11 @@
                         value: '-'
                     };
 
-                if (userProfile && userProfile.base) {
+                if (userProfile
+                    && userProfile.base
+                    && userProfile.base.stats
+                    && userProfile.base.stats.computed
+                    && userProfile.base.followers) {
                     badges.value = userProfile.base.stats.computed.num_offline_badges;
                     followers.value = userProfile.base.followers.length;
                     shares.value = userProfile.base.stats.computed.online_shares;
@@ -440,73 +456,83 @@
                 this.editing = false;
                 USER_ACTIONS.updateBio(this.user, this.shadowRoot.querySelector('#bio-input').value);
             }
-
-            _computeProgressItems (userProfile, progress) {
+            _getAppProgress(progress, app) {
+                if (!progress[app]) {
+                    return 0;
+                }
+                return progress[app].percentage;
+            }
+            _computeProgressItems(userProfile, progress) {
+                if (!this.user) {
+                    return;
+                }
                 let categories = {
                     kanoCode: {
-                        icon: '/node_modules/kit-app-ui/assets/icons/progress/kano-code.svg',
+                        icon: this._getAsset('kano-code.svg'),
                         color: '#ffc100',
                         label: 'Kano Code',
                         percentage: 0
                     },
                     pixelKit: {
-                        icon: '/node_modules/kit-app-ui/assets/icons/progress/pixel-kit.svg',
+                        icon: this._getAsset('pixel-kit.svg'),
                         color: '#fe8412',
                         label: 'Pixel Kit',
                         percentage: 0
                     },
                     motionSensor: {
-                        icon: '/node_modules/kit-app-ui/assets/icons/progress/motion-sensor.svg',
+                        icon: this._getAsset('motion-sensor.svg'),
                         color: '#eb4734',
                         label: 'Motion Sensor',
                         percentage: 0
                     },
                     makeArt: {
-                        icon: '/node_modules/kit-app-ui/assets/icons/progress/make-art.svg',
+                        icon: this._getAsset('make-art.svg'),
                         color: '#fe8412',
                         label: 'Make Art',
                         percentage: 0
                     },
                     makeSnake: {
-                        icon: '/node_modules/kit-app-ui/assets/icons/progress/make-snake.svg',
+                        icon: this._getAsset('/make-snake.svg'),
                         color: '#e85c5a',
                         label: 'Make Snake',
                         percentage: 0
                     },
                     makeMinecraft: {
-                        icon: '/node_modules/kit-app-ui/assets/icons/progress/hack-minecraft.svg',
+                        icon: this._getAsset('/hack-minecraft.svg'),
                         color: '#89cb41',
                         label: 'Hack Minecraft',
                         percentage: 0
                     },
                     terminalQuest: {
-                        icon: '/node_modules/kit-app-ui/assets/icons/progress/terminal-quest.svg',
+                        icon: this._getAsset('/terminal-quest.svg'),
                         color: '#bc1450',
                         label: 'Terminal Quest',
                         percentage: 0
                     },
                     makePong: {
-                        icon: '/node_modules/kit-app-ui/assets/icons/progress/make-pong.svg',
+                        icon: this._getAsset('/make-pong.svg'),
                         color: '#878787',
                         label: 'Make Pong',
                         percentage: 0
                     }
                 };
 
-                if (userProfile && userProfile.base) {
-                    let legacyProgress = userProfile.base.legacyProgress;
+                const { profile } = this.user;
 
-                    categories.makeArt.percentage = legacyProgress['kano-draw'].percentage;
-                    categories.makeSnake.percentage = legacyProgress['make-snake'].percentage;
-                    categories.makeMinecraft.percentage = legacyProgress['make-minecraft'].percentage;
-                    categories.makePong.percentage = legacyProgress['make-pong'].percentage;
-                    categories.terminalQuest.percentage = legacyProgress['linux-story'].percentage;
+                if (profile && profile && profile.legacyProgress) {
+                    const { legacyProgress } = profile;
+
+                    categories.makeArt.percentage = this._getAppProgress(legacyProgress, 'kano-draw');
+                    categories.makeSnake.percentage = this._getAppProgress(legacyProgress, 'make-snake');
+                    categories.makeMinecraft.percentage = this._getAppProgress(legacyProgress, 'make-minecraft');
+                    categories.makePong.percentage = this._getAppProgress(legacyProgress, 'make-pong');
+                    categories.terminalQuest.percentage = this._getAppProgress(legacyProgress, 'linux-story');
                 }
 
-                if (progress && progress.base) {
-                    [{source: progress.base['badges-vanilla'].badges, target: categories.kanoCode, max: 4},
-                        {source: progress.base['badges-pixel-kit'].badges, target: categories.pixelKit, max: 7},
-                        {source: progress.base['badges-motion-sensor'].badges, target: categories.motionSensor, max: 5}
+                if (this.progress) {
+                    [{source: this.progress['badges-vanilla'].badges, target: categories.kanoCode, max: 4},
+                        {source: this.progress['badges-pixel-kit'].badges, target: categories.pixelKit, max: 7},
+                        {source: this.progress['badges-motion-sensor'].badges, target: categories.motionSensor, max: 5}
                     ].forEach((spec) => {
                         let doneCount = spec.source.reduce((sum, badge) => {
                             if (badge.unlocked) {
