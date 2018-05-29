@@ -10,6 +10,15 @@
   "private": true,
   "dependencies": {
     "kwc-button": "KanoComponents/kwc-button#2.1.0",
-    "kwc-icons": "KanoComponents/kwc-icons#^1.9.0"
+    "kwc-icons": "KanoComponents/kwc-icons#^1.9.0",
+    "polymer": "^2.6.0",
+    "marked-element": "PolymerElements/marked-element#^2.4.0",
+    "paper-spinner": "PolymerElements/paper-spinner#^2.1.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.3",
+    "kwc-style": "KanoComponents/kwc-style#^2.0.0"
+  },
+  "resolutions": {
+    "polymer": "2.6.0",
+    "kwc-style": "^2.0.0"
   }
 }
