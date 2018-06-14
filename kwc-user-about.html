@@ -337,7 +337,6 @@
                     },
                     bio: {
                         type: String,
-                        notify: true,
                         value: null,
                     },
                     _stats: {
@@ -458,7 +457,9 @@
             }
             _saveTapped() {
                 this.editing = false;
-                this.set('bio', this.shadowRoot.querySelector('#bio-input').value);
+                const bio = this.shadowRoot.querySelector('#bio-input').value;
+                this.bio = bio;
+                this.dispatchEvent(new CustomEvent('bio-changed', { detail: { value: bio }, bubbles: true });
             }
             _computeProgressItems() {
                 return [
