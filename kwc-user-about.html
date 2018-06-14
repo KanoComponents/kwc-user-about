@@ -16,9 +16,11 @@
                 margin: 0 auto;
                 max-width: var(--content-width);
             }
+
             :host * {
                 box-sizing: border-box;
             }
+
             .content {
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
@@ -26,17 +28,21 @@
                 @apply --layout-justified;
                 min-height: calc(100vh - 300px);
             }
+
             /*TODO: Use breakpoint variable*/
+
             @media all and (max-width: 680px) {
                 .content {
                     @apply --layout-around-justified;
                 }
             }
+
             .loading {
                 width: 100%;
                 min-height: 30vh;
                 text-align: center;
             }
+
             .spinner {
                 margin-top: 150px;
             }
@@ -47,6 +53,7 @@
                 font-family: 'bariol', sans-serif;
                 color: var(--color-chateau, #414a51);
             }
+
             .about-page .section {
                 width: 100%;
 
@@ -55,36 +62,46 @@
 
                 margin-bottom: 20px;
             }
+
             .about-page .bio-text {
                 margin: 0px 50px;
                 font-size: 18px;
                 text-align: center;
             }
+
             .about-page .bio-text pre {
                 text-align: left;
             }
+
             .save-button {
                 @apply --kano-round-button;
                 background-color: var(--color-kano-orange, #ff6900);
             }
+
             .save-button:hover {
                 background-color: #c95924;
             }
-            kwc-soft-button, .save-button {
+
+            kwc-soft-button,
+            .save-button {
                 margin-top: 20px;
             }
+
             .about-page h2 {
                 margin-left: auto;
                 margin-right: auto;
             }
+
             .about-page .backdrop {
                 @apply --layout-self-stretch;
                 background: var(--color-porcelain, #e9ebec);
                 border-radius: 6px;
             }
+
             .stats {
                 padding: 25px;
             }
+
             .stats-tile {
                 background: #fff;
                 border-radius: 6px;
@@ -92,22 +109,26 @@
                 @apply --layout-vertical;
                 padding: 25px 0 15px 0;
             }
+
             .stats-content {
                 @apply --layout-horizontal;
                 @apply --layout-center-justified;
                 @apply --layout-center;
                 margin-bottom: 10px;
             }
+
             .stats-content iron-icon {
                 margin-right: 5px;
                 width: 24px;
                 height: 24px;
             }
+
             .stats-content .value {
                 line-height: 30px;
                 font-size: 30px;
                 font-weight: bold;
             }
+
             .stats-label {
                 text-align: center;
                 font-weight: bold;
@@ -122,6 +143,7 @@
                 padding: 25px;
                 margin-bottom: 50px;
             }
+
             .progress-tile {
                 background: #fff;
                 border-radius: 6px;
@@ -129,19 +151,23 @@
                 padding: 10px;
                 margin: 10px 15px;
             }
+
             .progress-tile iron-icon {
                 width: 44px;
                 height: 44px;
             }
+
             .progress-content {
                 @apply --layout-vertical;
                 margin-left: 10px;
                 width: 100%;
             }
+
             .progress-title {
                 font-weight: bold;
                 text-transform: uppercase;
             }
+
             .progress-bar {
                 @apply --layout-self-stretch;
                 background: var(--color-porcelain, #e9ebec);
@@ -151,6 +177,7 @@
                 margin-top: 5px;
                 overflow: hidden;
             }
+
             .progress-bar-gauge {
                 background-color: red;
                 width: 50%;
@@ -175,18 +202,22 @@
 
                 --paper-input-container-underline: {
                     display: none;
-                };
+                }
+                ;
                 --paper-input-container-underline-focus: {
                     display: none;
-                };
+                }
+                ;
                 --paper-input-container-underline-disabled: {
                     display: none;
-                };
+                }
+                ;
             }
 
             paper-textarea.focused {
                 border: 1px solid var(--color-orange, #ff6a00);
             }
+
             @media all and (max-width: 680px) {
                 .stats {
                     @apply --layout-vertical;
@@ -199,6 +230,7 @@
                     width: 100%;
                 }
             }
+
             @media all and (min-width: 681px) {
                 .stats {
                     @apply --layout-horizontal;
@@ -208,18 +240,20 @@
                     width: 170px;
                 }
             }
+
             @media all and (min-width: 681px) and (max-width: 980px) {
                 .progress-tile {
                     width: calc(50% - 30px);
                 }
             }
+
             @media all and (min-width: 981px) {
                 .progress-tile {
                     width: calc(33% - 30px);
                 }
             }
         </style>
-        
+
         <div class="content">
             <template is="dom-if" if="[[loading]]">
                 <div class="loading">
@@ -231,31 +265,26 @@
                     <div class="section">
                         <h2>Bio</h2>
                         <template is="dom-if" if="[[!editing]]">
-                            <marked-element class="bio-text" markdown="[[_getBioText(user.profile.bio)]]">
+                            <marked-element class="bio-text" markdown="[[_getBioText(bio)]]">
                                 <div slot="markdown-html"></div>
                             </marked-element>
-                            <kwc-soft-button on-tap="_editTapped" hidden$="[[!allowEditBio]]">Edit</kwc-soft-button>
+                            <kwc-soft-button on-click="_editTapped" hidden$="[[!allowEditBio]]">Edit</kwc-soft-button>
                         </template>
                         <template is="dom-if" if="[[editing]]">
-                            <paper-textarea
-                                id="bio-input"
-                                value="[[user.profile.bio]]"
-                                placeholder="Write up your bio..."
-                                no-label-float
-                                focused="{{inputFocused}}"
+                            <paper-textarea id="bio-input" value="[[bio]]" placeholder="Write up your bio..." no-label-float focused="{{inputFocused}}"
                                 class$="[[_getInputClass(inputFocused)]]"></paper-textarea>
-                            <button class="save-button" on-tap="_saveTapped">Save</button>
+                            <button class="save-button" on-click="_saveTapped">Save</button>
                         </template>
                     </div>
 
                     <div class="section">
                         <h2>Stats</h2>
                         <div class="backdrop stats">
-                            <template is="dom-repeat" items="[[stats]]">
+                            <template is="dom-repeat" items="[[_stats]]">
                                 <div class="stats-tile">
                                     <div class="stats-content">
                                         <iron-icon icon="[[item.icon]]" style$="color: [[item.color]];"></iron-icon>
-                                        <div class="value">[[item.value]]</div>
+                                        <div class="value">[[_getStatValue(item.id, stats.*)]]</div>
                                     </div>
                                     <div class="stats-label">[[item.label]]</div>
                                 </div>
@@ -266,13 +295,13 @@
                     <div class="section">
                         <h2>Progress</h2>
                         <div class="backdrop progress">
-                            <template is="dom-repeat" items="[[progressItems]]" as="item">
+                            <template is="dom-repeat" items="[[_progress]]">
                                 <div class="progress-tile">
                                     <iron-icon src="[[item.icon]]"></iron-icon>
                                     <div class="progress-content">
                                         <div class="progress-title">[[item.label]]</div>
                                         <div class="progress-bar">
-                                            <div class="progress-bar-gauge" style$="background-color: [[item.color]]; width: [[item.percentage]]%;"></div>
+                                            <div class="progress-bar-gauge" style$="background-color: [[item.color]]; width: [[_getProgressValue(item.id, progress)]]%;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -306,37 +335,34 @@
                         observer: 'observeFetching',
                         value: false,
                     },
-                    /**
-                     * User object.
-                     * @type {Object}
-                     */
-                    user: {
-                        type: Object,
+                    bio: {
+                        type: String,
+                        notify: true,
                         value: null,
                     },
-                    /**
-                     * User progress.
-                     * @type {Object}
-                     */
-                    progress: {
-                        type: Object,
-                        value: null,
+                    _stats: {
+                        type: Array,
+                        value: KwcUserAbout._computeStats(),
                     },
                     stats: {
-                        type: Array,
-                        computed: '_computeStats(user.profile.*, staffPicks)',
+                        type: Object,
+                        value: () => {
+                            return {};
+                        },
                     },
-                    progressItems: {
+                    _progress: {
                         type: Array,
-                        computed: '_computeProgressItems(user.profile.*, progress.*)',
+                        computed: '_computeProgressItems(assetsPath)',
+                    },
+                    progress: {
+                        type: Object,
+                        value: () => {
+                            return {};
+                        },
                     },
                     allowEditBio: {
                         type: Boolean,
                         value: false,
-                    },
-                    staffPicks: {
-                        type: Number,
-                        value: null,
                     },
                     editing: {
                         type: Boolean,
@@ -344,41 +370,34 @@
                     },
                     assetsPath: {
                         type: String,
-                        value: '',
                     }
                 };
             }
             static get observers() {
                 return [
-                    '_autoEditBio(user.profile.bio, allowEditBio)'
+                    '_autoEditBio(bio, allowEditBio)'
                 ]
             }
-
-            connectedCallback () {
+            connectedCallback() {
                 super.connectedCallback();
 
                 /** Resize loading container when the window resizes */
                 this.resizeLoading = this.resizeLoading.bind(this);
                 window.addEventListener('resize', this.resizeLoading);
-
-                this.editing = false;
             }
-
-            disconnectedCallback () {
+            disconnectedCallback() {
                 window.removeEventListener('resize', this.resizeLoading);
             }
-
             observeFetching(newValue, oldValue) {
                 this.resizeLoading();
             }
-
             /**
              * Recalculates the loading container to be the same size as the
              * wrapper content so when changing pages there is as little
              * jumping as possible. Also recalculates the position for
              * loading spinner
              */
-            resizeLoading () {
+            resizeLoading() {
                 let content = Polymer.dom(this.root).querySelector('.content'),
                     loading = Polymer.dom(this.root).querySelector('.loading'),
                     spinner = Polymer.dom(this.root).querySelector('.spinner');
@@ -400,168 +419,113 @@
                     spinner.style.marginTop = `${spinnerOffset}px`;
                 }
             }
-
             _getAsset(path) {
                 return `${this.assetsPath}${path}`;
             }
+            static _computeStats() {
+                const medals = {
+                    id: 'medals',
+                    icon: 'kwc-ui-icons:medal',
+                    color: '#ff6a00',
+                    label: 'medals',
+                };
+                const followers = {
+                    id: 'followers',
+                    icon: 'kwc-ui-icons:followers',
+                    color: '#87c53f',
+                    label: 'followers',
+                };
+                const picks = {
+                    id: 'picks',
+                    icon: 'kwc-ui-icons:staff-pick',
+                    color: '#ffc100',
+                    label: 'staff picks',
+                };
+                const shares = {
+                    id: 'shares',
+                    icon: 'kwc-icons:world',
+                    color: '#1093f5',
+                    label: 'shares',
+                };
 
-            _computeStats (userProfile, staffPicks) {
-                let badges = {
-                        icon: 'kwc-ui-icons:medal',
-                        color: '#ff6a00',
-                        label: 'medals',
-                        value: '-'
-                    },
-                    followers = {
-                        icon: 'kwc-ui-icons:followers',
-                        color: '#87c53f',
-                        label: 'followers',
-                        value: '-'
-                    },
-                    picks = {
-                        icon: 'kwc-ui-icons:staff-pick',
-                        color: '#ffc100',
-                        label: 'staff picks',
-                        value: '-'
-                    },
-                    shares = {
-                        icon: 'kwc-icons:world',
-                        color: '#1093f5',
-                        label: 'shares',
-                        value: '-'
-                    };
-
-                if (userProfile
-                    && userProfile.base
-                    && userProfile.base.stats
-                    && userProfile.base.stats.computed
-                    && userProfile.base.followers) {
-                    badges.value = userProfile.base.stats.computed.num_offline_badges;
-                    followers.value = userProfile.base.followers.length;
-                    shares.value = userProfile.base.stats.computed.online_shares;
-                }
-
-                if (Number.isInteger(staffPicks)) {
-                    picks.value = staffPicks;
-                }
-
-                return [badges, followers, picks, shares];
+                return [medals, followers, picks, shares];
             }
-
-            _editTapped () {
+            _getStatValue(id) {
+                return this.stats[id] || '-';
+            }
+            _editTapped() {
                 this.editing = true;
             }
-
-            _saveTapped () {
+            _saveTapped() {
                 this.editing = false;
-                USER_ACTIONS.updateBio(this.user, this.shadowRoot.querySelector('#bio-input').value);
+                this.set('bio', this.shadowRoot.querySelector('#bio-input').value);
             }
-            _getAppProgress(progress, app) {
-                if (!progress[app]) {
-                    return 0;
-                }
-                return progress[app].percentage;
-            }
-            _computeProgressItems(userProfile, progress) {
-                if (!this.user) {
-                    return;
-                }
-                let categories = {
-                    kanoCode: {
+            _computeProgressItems() {
+                return [
+                    {
+                        id: 'kanoCode',
                         icon: this._getAsset('kano-code.svg'),
                         color: '#ffc100',
                         label: 'Kano Code',
-                        percentage: 0
                     },
-                    pixelKit: {
+                    {
+                        id: 'pixelKit',
                         icon: this._getAsset('pixel-kit.svg'),
                         color: '#fe8412',
                         label: 'Pixel Kit',
-                        percentage: 0
                     },
-                    motionSensor: {
+                    {
+                        id: 'motionSensor',
                         icon: this._getAsset('motion-sensor.svg'),
                         color: '#eb4734',
                         label: 'Motion Sensor',
-                        percentage: 0
                     },
-                    makeArt: {
+                    {
+                        id: 'makeArt',
                         icon: this._getAsset('make-art.svg'),
                         color: '#fe8412',
                         label: 'Make Art',
-                        percentage: 0
                     },
-                    makeSnake: {
-                        icon: this._getAsset('/make-snake.svg'),
+                    {
+                        id : 'makeSnake',
+                        icon: this._getAsset('make-snake.svg'),
                         color: '#e85c5a',
                         label: 'Make Snake',
-                        percentage: 0
                     },
-                    makeMinecraft: {
-                        icon: this._getAsset('/hack-minecraft.svg'),
+                    {
+                        id : 'makeMinecraft',
+                        icon: this._getAsset('hack-minecraft.svg'),
                         color: '#89cb41',
                         label: 'Hack Minecraft',
-                        percentage: 0
                     },
-                    terminalQuest: {
-                        icon: this._getAsset('/terminal-quest.svg'),
+                    {
+                        id : 'terminalQuest',
+                        icon: this._getAsset('terminal-quest.svg'),
                         color: '#bc1450',
                         label: 'Terminal Quest',
-                        percentage: 0
                     },
-                    makePong: {
-                        icon: this._getAsset('/make-pong.svg'),
+                    {
+                        id : 'makePong',
+                        icon: this._getAsset('make-pong.svg'),
                         color: '#878787',
                         label: 'Make Pong',
-                        percentage: 0
                     }
-                };
-
-                const { profile } = this.user;
-
-                if (profile && profile && profile.legacyProgress) {
-                    const { legacyProgress } = profile;
-
-                    categories.makeArt.percentage = this._getAppProgress(legacyProgress, 'kano-draw');
-                    categories.makeSnake.percentage = this._getAppProgress(legacyProgress, 'make-snake');
-                    categories.makeMinecraft.percentage = this._getAppProgress(legacyProgress, 'make-minecraft');
-                    categories.makePong.percentage = this._getAppProgress(legacyProgress, 'make-pong');
-                    categories.terminalQuest.percentage = this._getAppProgress(legacyProgress, 'linux-story');
-                }
-
-                if (this.progress) {
-                    [{source: this.progress['badges-vanilla'].badges, target: categories.kanoCode, max: 4},
-                        {source: this.progress['badges-pixel-kit'].badges, target: categories.pixelKit, max: 7},
-                        {source: this.progress['badges-motion-sensor'].badges, target: categories.motionSensor, max: 5}
-                    ].forEach((spec) => {
-                        let doneCount = spec.source.reduce((sum, badge) => {
-                            if (badge.unlocked) {
-                                return sum + 1;
-                            }
-
-                            return sum;
-                        }, 0);
-
-                        spec.target.percentage = Math.min((doneCount / spec.max) * 100, 100);
-                    });
-                }
-
-                return Object.keys(categories).map(key => categories[key]);
+                ];
             }
-
+            _getProgressValue(id) {
+                return this.progress[id] || 0;
+            }
             _getInputClass(focused) {
                 return focused ? 'focused' : '';
             }
-
-            _getBioText (bio) {
+            _getBioText(bio) {
                 if (!bio || bio === '') {
                     return `User has no bio.`;
                 }
 
                 return bio;
             }
-
-            _autoEditBio (bio, allowEditBio) {
+            _autoEditBio(bio, allowEditBio) {
                 /* If the user's bio is empty, open the editor by default. */
                 if (bio === '' && allowEditBio) {
                     this.editing = true;
