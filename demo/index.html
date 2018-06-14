@@ -92,6 +92,7 @@
                 const legacyEl = document.querySelector('#legacy');
                 legacyEl.stats = KwcUserAboutUtil.getStatsForUser(user.profile, staffPicks);
                 legacyEl.progress = KwcUserAboutUtil.getProgressForUser(user, progress);
+                legacyEl.bio = user.profile.bio;
             });
         </script>
     </body>
