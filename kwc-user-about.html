@@ -459,7 +459,7 @@
                 this.editing = false;
                 const bio = this.shadowRoot.querySelector('#bio-input').value;
                 this.bio = bio;
-                this.dispatchEvent(new CustomEvent('bio-changed', { detail: { value: bio }, bubbles: true });
+                this.dispatchEvent(new CustomEvent('bio-changed', { detail: { value: bio }, bubbles: true }));
             }
             _computeProgressItems() {
                 return [
