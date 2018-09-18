@@ -18,19 +18,17 @@ import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
  * @demo demo/index.html
  */
 class KwcUserAbout extends PolymerElement {
-  static get template() {
-    return html`
+    static get template() {
+        return html`
         <style>
             :host {
                 display: block;
                 margin: 0 auto;
                 max-width: var(--content-width);
             }
-
             :host * {
                 box-sizing: border-box;
             }
-
             .content {
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
@@ -40,30 +38,25 @@ class KwcUserAbout extends PolymerElement {
             }
 
             /*TODO: Use breakpoint variable*/
-
             @media all and (max-width: 680px) {
                 .content {
                     @apply --layout-around-justified;
                 }
             }
-
             .loading {
                 width: 100%;
                 min-height: 30vh;
                 text-align: center;
             }
-
             .spinner {
                 margin-top: 150px;
             }
-
             .about-page {
                 @apply --layout-vertical;
                 width: 100%;
                 font-family: 'bariol', sans-serif;
                 color: var(--color-chateau, #414a51);
             }
-
             .about-page .section {
                 width: 100%;
 
@@ -72,46 +65,38 @@ class KwcUserAbout extends PolymerElement {
 
                 margin-bottom: 20px;
             }
-
             .about-page .bio-text {
-                margin: 0px 50px;
                 font-size: 18px;
                 text-align: center;
+                width: calc(100% - 80px);
+                background: #FFF;
+                border-radius: 6px;
             }
-
             .about-page .bio-text pre {
                 text-align: left;
             }
-
             .save-button {
                 @apply --kano-round-button;
                 background-color: var(--color-kano-orange, #ff6900);
             }
-
             .save-button:hover {
                 background-color: #c95924;
             }
-
             kwc-soft-button,
             .save-button {
                 margin-top: 20px;
             }
-
             .about-page h2 {
+                margin-top: 0;
                 margin-left: auto;
                 margin-right: auto;
             }
-
             .about-page .backdrop {
                 @apply --layout-self-stretch;
-                background: var(--color-porcelain, #e9ebec);
-                border-radius: 6px;
             }
-
             .stats {
-                padding: 25px;
+                padding: 0 25px;
             }
-
             .stats-tile {
                 background: #fff;
                 border-radius: 6px;
@@ -119,26 +104,22 @@ class KwcUserAbout extends PolymerElement {
                 @apply --layout-vertical;
                 padding: 25px 0 15px 0;
             }
-
             .stats-content {
                 @apply --layout-horizontal;
                 @apply --layout-center-justified;
                 @apply --layout-center;
                 margin-bottom: 10px;
             }
-
             .stats-content iron-icon {
                 margin-right: 5px;
                 width: 24px;
                 height: 24px;
             }
-
             .stats-content .value {
                 line-height: 30px;
                 font-size: 30px;
                 font-weight: bold;
             }
-
             .stats-label {
                 text-align: center;
                 font-weight: bold;
@@ -146,14 +127,12 @@ class KwcUserAbout extends PolymerElement {
                 text-transform: uppercase;
                 font-size: 14px;
             }
-
             .progress {
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
-                padding: 25px;
+                padding: 0 25px;
                 margin-bottom: 50px;
             }
-
             .progress-tile {
                 background: #fff;
                 border-radius: 6px;
@@ -161,23 +140,19 @@ class KwcUserAbout extends PolymerElement {
                 padding: 10px;
                 margin: 10px 15px;
             }
-
             .progress-tile iron-icon {
                 width: 44px;
                 height: 44px;
             }
-
             .progress-content {
                 @apply --layout-vertical;
                 margin-left: 10px;
                 width: 100%;
             }
-
             .progress-title {
                 font-weight: bold;
                 text-transform: uppercase;
             }
-
             .progress-bar {
                 @apply --layout-self-stretch;
                 background: var(--color-porcelain, #e9ebec);
@@ -187,19 +162,18 @@ class KwcUserAbout extends PolymerElement {
                 margin-top: 5px;
                 overflow: hidden;
             }
-
             .progress-bar-gauge {
                 background-color: red;
                 width: 50%;
                 height: 100%;
             }
-
             paper-textarea {
                 width: calc(100% - 100px);
                 border: 1px solid #a2a6aa;
                 border-radius: 6px;
                 padding: 10px 20px;
                 min-height: 100px;
+                background: #FFF;
 
                 --paper-input-container-input: {
                     font-family: 'bariol', sans-serif;
@@ -212,22 +186,20 @@ class KwcUserAbout extends PolymerElement {
 
                 --paper-input-container-underline: {
                     display: none;
-                }
-                ;
+                };
                 --paper-input-container-underline-focus: {
                     display: none;
-                }
-                ;
+                };
                 --paper-input-container-underline-disabled: {
                     display: none;
-                }
-                ;
+                };
             }
-
             paper-textarea.focused {
                 border: 1px solid var(--color-orange, #ff6a00);
             }
-
+            h2.margin {
+                margin-bottom: 9px;
+            }
             @media all and (max-width: 680px) {
                 .stats {
                     @apply --layout-vertical;
@@ -240,7 +212,6 @@ class KwcUserAbout extends PolymerElement {
                     width: 100%;
                 }
             }
-
             @media all and (min-width: 681px) {
                 .stats {
                     @apply --layout-horizontal;
@@ -250,13 +221,11 @@ class KwcUserAbout extends PolymerElement {
                     width: 170px;
                 }
             }
-
             @media all and (min-width: 681px) and (max-width: 980px) {
                 .progress-tile {
                     width: calc(50% - 30px);
                 }
             }
-
             @media all and (min-width: 981px) {
                 .progress-tile {
                     width: calc(33% - 30px);
@@ -273,7 +242,7 @@ class KwcUserAbout extends PolymerElement {
             <template is="dom-if" if="[[!loading]]">
                 <div class="about-page">
                     <div class="section">
-                        <h2>Bio</h2>
+                        <h2 class="margin">Bio</h2>
                         <template is="dom-if" if="[[!editing]]">
                             <marked-element class="bio-text" markdown="[[_getBioText(bio)]]">
                                 <div slot="markdown-html"></div>
@@ -302,7 +271,7 @@ class KwcUserAbout extends PolymerElement {
                     </div>
 
                     <div class="section">
-                        <h2>Progress</h2>
+                        <h2 class="margin">Progress</h2>
                         <div class="backdrop progress">
                             <template is="dom-repeat" items="[[_progress]]">
                                 <div class="progress-tile">
@@ -321,217 +290,217 @@ class KwcUserAbout extends PolymerElement {
             </template>
         </div>
 `;
-  }
+    }
 
-  static get is() { return 'kwc-user-about'; }
-  static get properties() {
-      return {
-          /**
-           * Flags if there is an ongoing request for shares data.
-           * @type {Boolean}
-           */
-          loading: {
-              type: Boolean,
-              observer: 'observeFetching',
-              value: false,
-          },
-          bio: {
-              type: String,
-              value: null,
-          },
-          _stats: {
-              type: Array,
-              value: KwcUserAbout._computeStats(),
-          },
-          stats: {
-              type: Object,
-              value: () => {
-                  return {};
-              },
-          },
-          _progress: {
-              type: Array,
-              computed: '_computeProgressItems(assetsPath)',
-          },
-          progress: {
-              type: Object,
-              value: () => {
-                  return {};
-              },
-          },
-          allowEditBio: {
-              type: Boolean,
-              value: false,
-          },
-          editing: {
-              type: Boolean,
-              value: false,
-          },
-          assetsPath: {
-              type: String,
-          }
-      };
-  }
-  static get observers() {
-      return [
-          '_autoEditBio(bio, allowEditBio)'
-      ]
-  }
-  connectedCallback() {
-      super.connectedCallback();
+    static get is() { return 'kwc-user-about'; }
+    static get properties() {
+        return {
+            /**
+             * Flags if there is an ongoing request for shares data.
+             * @type {Boolean}
+             */
+            loading: {
+                type: Boolean,
+                observer: 'observeFetching',
+                value: false,
+            },
+            bio: {
+                type: String,
+                value: null,
+            },
+            _stats: {
+                type: Array,
+                value: KwcUserAbout._computeStats(),
+            },
+            stats: {
+                type: Object,
+                value: () => {
+                    return {};
+                },
+            },
+            _progress: {
+                type: Array,
+                computed: '_computeProgressItems(assetsPath)',
+            },
+            progress: {
+                type: Object,
+                value: () => {
+                    return {};
+                },
+            },
+            allowEditBio: {
+                type: Boolean,
+                value: false,
+            },
+            editing: {
+                type: Boolean,
+                value: false,
+            },
+            assetsPath: {
+                type: String,
+            }
+        };
+    }
+    static get observers() {
+        return [
+            '_autoEditBio(bio, allowEditBio)'
+        ]
+    }
+    connectedCallback() {
+        super.connectedCallback();
 
-      /** Resize loading container when the window resizes */
-      this.resizeLoading = this.resizeLoading.bind(this);
-      window.addEventListener('resize', this.resizeLoading);
-  }
-  disconnectedCallback() {
-      window.removeEventListener('resize', this.resizeLoading);
-  }
-  observeFetching(newValue, oldValue) {
-      this.resizeLoading();
-  }
-  /**
-   * Recalculates the loading container to be the same size as the
-   * wrapper content so when changing pages there is as little
-   * jumping as possible. Also recalculates the position for
-   * loading spinner
-   */
-  resizeLoading() {
-      let content = dom(this.root).querySelector('.content'),
-          loading = dom(this.root).querySelector('.loading'),
-          spinner = dom(this.root).querySelector('.spinner');
+        /** Resize loading container when the window resizes */
+        this.resizeLoading = this.resizeLoading.bind(this);
+        window.addEventListener('resize', this.resizeLoading);
+    }
+    disconnectedCallback() {
+        window.removeEventListener('resize', this.resizeLoading);
+    }
+    observeFetching(newValue, oldValue) {
+        this.resizeLoading();
+    }
+    /**
+     * Recalculates the loading container to be the same size as the
+     * wrapper content so when changing pages there is as little
+     * jumping as possible. Also recalculates the position for
+     * loading spinner
+     */
+    resizeLoading() {
+        let content = dom(this.root).querySelector('.content'),
+            loading = dom(this.root).querySelector('.loading'),
+            spinner = dom(this.root).querySelector('.spinner');
 
-      if (content && loading) {
-          let currentHeight = content.offsetHeight;
-          loading.style.height = `${currentHeight}px`;
+        if (content && loading) {
+            let currentHeight = content.offsetHeight;
+            loading.style.height = `${currentHeight}px`;
 
-          /**
-           * Make sure the spinner will be always at least 150
-           * pixels from the top
-           */
-          let spinnerOffset = Math.max(window.pageYOffset, 150);
-          /**
-           * Make sure the spinner will always be at least 150
-           * pixels away from the bottom
-           */
-          spinnerOffset = Math.min(spinnerOffset, currentHeight - 150);
-          spinner.style.marginTop = `${spinnerOffset}px`;
-      }
-  }
-  _getAsset(path) {
-      return `${this.assetsPath}${path}`;
-  }
-  static _computeStats() {
-      const medals = {
-          id: 'medals',
-          icon: 'kwc-ui-icons:medal',
-          color: '#ff6a00',
-          label: 'medals',
-      };
-      const followers = {
-          id: 'followers',
-          icon: 'kwc-ui-icons:followers',
-          color: '#87c53f',
-          label: 'followers',
-      };
-      const picks = {
-          id: 'picks',
-          icon: 'kwc-ui-icons:staff-pick',
-          color: '#ffc100',
-          label: 'staff picks',
-      };
-      const shares = {
-          id: 'shares',
-          icon: 'kwc-icons:world',
-          color: '#1093f5',
-          label: 'shares',
-      };
+            /**
+             * Make sure the spinner will be always at least 150
+             * pixels from the top
+             */
+            let spinnerOffset = Math.max(window.pageYOffset, 150);
+            /**
+             * Make sure the spinner will always be at least 150
+             * pixels away from the bottom
+             */
+            spinnerOffset = Math.min(spinnerOffset, currentHeight - 150);
+            spinner.style.marginTop = `${spinnerOffset}px`;
+        }
+    }
+    _getAsset(path) {
+        return `${this.assetsPath}${path}`;
+    }
+    static _computeStats() {
+        const medals = {
+            id: 'medals',
+            icon: 'kwc-ui-icons:medal',
+            color: '#ff6a00',
+            label: 'medals',
+        };
+        const followers = {
+            id: 'followers',
+            icon: 'kwc-ui-icons:followers',
+            color: '#87c53f',
+            label: 'followers',
+        };
+        const picks = {
+            id: 'picks',
+            icon: 'kwc-ui-icons:staff-pick',
+            color: '#ffc100',
+            label: 'staff picks',
+        };
+        const shares = {
+            id: 'shares',
+            icon: 'kwc-icons:world',
+            color: '#1093f5',
+            label: 'shares',
+        };
 
-      return [medals, followers, picks, shares];
-  }
-  _getStatValue(id) {
-      return this.stats[id] || '-';
-  }
-  _editTapped() {
-      this.editing = true;
-  }
-  _saveTapped() {
-      this.editing = false;
-      const bio = this.shadowRoot.querySelector('#bio-input').value;
-      this.bio = bio;
-      this.dispatchEvent(new CustomEvent('bio-changed', { detail: { value: bio }, bubbles: true }));
-  }
-  _computeProgressItems() {
-      return [
-          {
-              id: 'kanoCode',
-              icon: this._getAsset('kano-code.svg'),
-              color: '#ffc100',
-              label: 'Kano Code',
-          },
-          {
-              id: 'pixelKit',
-              icon: this._getAsset('pixel-kit.svg'),
-              color: '#fe8412',
-              label: 'Pixel Kit',
-          },
-          {
-              id: 'motionSensor',
-              icon: this._getAsset('motion-sensor.svg'),
-              color: '#eb4734',
-              label: 'Motion Sensor',
-          },
-          {
-              id: 'makeArt',
-              icon: this._getAsset('make-art.svg'),
-              color: '#fe8412',
-              label: 'Make Art',
-          },
-          {
-              id : 'makeSnake',
-              icon: this._getAsset('make-snake.svg'),
-              color: '#e85c5a',
-              label: 'Make Snake',
-          },
-          {
-              id : 'makeMinecraft',
-              icon: this._getAsset('hack-minecraft.svg'),
-              color: '#89cb41',
-              label: 'Hack Minecraft',
-          },
-          {
-              id : 'terminalQuest',
-              icon: this._getAsset('terminal-quest.svg'),
-              color: '#bc1450',
-              label: 'Terminal Quest',
-          },
-          {
-              id : 'makePong',
-              icon: this._getAsset('make-pong.svg'),
-              color: '#878787',
-              label: 'Make Pong',
-          }
-      ];
-  }
-  _getProgressValue(id) {
-      return this.progress[id] || 0;
-  }
-  _getInputClass(focused) {
-      return focused ? 'focused' : '';
-  }
-  _getBioText(bio) {
-      if (!bio || bio === '') {
-          return `User has no bio.`;
-      }
+        return [medals, followers, picks, shares];
+    }
+    _getStatValue(id) {
+        return this.stats[id] || '-';
+    }
+    _editTapped() {
+        this.editing = true;
+    }
+    _saveTapped() {
+        this.editing = false;
+        const bio = this.shadowRoot.querySelector('#bio-input').value;
+        this.bio = bio;
+        this.dispatchEvent(new CustomEvent('bio-changed', { detail: { value: bio }, bubbles: true }));
+    }
+    _computeProgressItems() {
+        return [
+            {
+                id: 'kanoCode',
+                icon: this._getAsset('kano-code.svg'),
+                color: '#ffc100',
+                label: 'Kano Code',
+            },
+            {
+                id: 'pixelKit',
+                icon: this._getAsset('pixel-kit.svg'),
+                color: '#fe8412',
+                label: 'Pixel Kit',
+            },
+            {
+                id: 'motionSensor',
+                icon: this._getAsset('motion-sensor.svg'),
+                color: '#eb4734',
+                label: 'Motion Sensor',
+            },
+            {
+                id: 'makeArt',
+                icon: this._getAsset('make-art.svg'),
+                color: '#fe8412',
+                label: 'Make Art',
+            },
+            {
+                id: 'makeSnake',
+                icon: this._getAsset('make-snake.svg'),
+                color: '#e85c5a',
+                label: 'Make Snake',
+            },
+            {
+                id: 'makeMinecraft',
+                icon: this._getAsset('hack-minecraft.svg'),
+                color: '#89cb41',
+                label: 'Hack Minecraft',
+            },
+            {
+                id: 'terminalQuest',
+                icon: this._getAsset('terminal-quest.svg'),
+                color: '#bc1450',
+                label: 'Terminal Quest',
+            },
+            {
+                id: 'makePong',
+                icon: this._getAsset('make-pong.svg'),
+                color: '#878787',
+                label: 'Make Pong',
+            }
+        ];
+    }
+    _getProgressValue(id) {
+        return this.progress[id] || 0;
+    }
+    _getInputClass(focused) {
+        return focused ? 'focused' : '';
+    }
+    _getBioText(bio) {
+        if (!bio || bio === '') {
+            return `User has no bio.`;
+        }
 
-      return bio;
-  }
-  _autoEditBio(bio, allowEditBio) {
-      /* If the user's bio is empty, open the editor by default. */
-      if (bio === '' && allowEditBio) {
-          this.editing = true;
-      }
-  }
+        return bio;
+    }
+    _autoEditBio(bio, allowEditBio) {
+        /* If the user's bio is empty, open the editor by default. */
+        if (bio === '' && allowEditBio) {
+            this.editing = true;
+        }
+    }
 }
 
 window.customElements.define(KwcUserAbout.is, KwcUserAbout);
