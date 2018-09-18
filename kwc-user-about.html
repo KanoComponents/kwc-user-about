@@ -16,11 +16,9 @@
                 margin: 0 auto;
                 max-width: var(--content-width);
             }
-
             :host * {
                 box-sizing: border-box;
             }
-
             .content {
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
@@ -28,31 +26,26 @@
                 @apply --layout-justified;
                 min-height: calc(100vh - 300px);
             }
-
             /*TODO: Use breakpoint variable*/
             @media all and (max-width: 680px) {
                 .content {
                     @apply --layout-around-justified;
                 }
             }
-
             .loading {
                 width: 100%;
                 min-height: 30vh;
                 text-align: center;
             }
-
             .spinner {
                 margin-top: 150px;
             }
-
             .about-page {
                 @apply --layout-vertical;
                 width: 100%;
                 font-family: 'bariol', sans-serif;
                 color: var(--color-chateau, #414a51);
             }
-
             .about-page .section {
                 width: 100%;
 
@@ -61,7 +54,6 @@
 
                 margin-bottom: 20px;
             }
-
             .about-page .bio-text {
                 font-size: 18px;
                 text-align: center;
@@ -69,39 +61,31 @@
                 background: #FFF;
                 border-radius: 6px;
             }
-
             .about-page .bio-text pre {
                 text-align: left;
             }
-
             .save-button {
                 @apply --kano-round-button;
                 background-color: var(--color-kano-orange, #ff6900);
             }
-
             .save-button:hover {
                 background-color: #c95924;
             }
-
             kwc-soft-button,
             .save-button {
                 margin-top: 20px;
             }
-
             .about-page h2 {
                 margin-top: 0;
                 margin-left: auto;
                 margin-right: auto;
             }
-
             .about-page .backdrop {
                 @apply --layout-self-stretch;
             }
-
             .stats {
                 padding: 0 25px;
             }
-
             .stats-tile {
                 background: #fff;
                 border-radius: 6px;
@@ -109,26 +93,22 @@
                 @apply --layout-vertical;
                 padding: 25px 0 15px 0;
             }
-
             .stats-content {
                 @apply --layout-horizontal;
                 @apply --layout-center-justified;
                 @apply --layout-center;
                 margin-bottom: 10px;
             }
-
             .stats-content iron-icon {
                 margin-right: 5px;
                 width: 24px;
                 height: 24px;
             }
-
             .stats-content .value {
                 line-height: 30px;
                 font-size: 30px;
                 font-weight: bold;
             }
-
             .stats-label {
                 text-align: center;
                 font-weight: bold;
@@ -136,14 +116,12 @@
                 text-transform: uppercase;
                 font-size: 14px;
             }
-
             .progress {
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
                 padding: 0 25px;
                 margin-bottom: 50px;
             }
-
             .progress-tile {
                 background: #fff;
                 border-radius: 6px;
@@ -151,23 +129,19 @@
                 padding: 10px;
                 margin: 10px 15px;
             }
-
             .progress-tile iron-icon {
                 width: 44px;
                 height: 44px;
             }
-
             .progress-content {
                 @apply --layout-vertical;
                 margin-left: 10px;
                 width: 100%;
             }
-
             .progress-title {
                 font-weight: bold;
                 text-transform: uppercase;
             }
-
             .progress-bar {
                 @apply --layout-self-stretch;
                 background: var(--color-porcelain, #e9ebec);
@@ -177,13 +151,11 @@
                 margin-top: 5px;
                 overflow: hidden;
             }
-
             .progress-bar-gauge {
                 background-color: red;
                 width: 50%;
                 height: 100%;
             }
-
             paper-textarea {
                 width: calc(100% - 100px);
                 border: 1px solid #a2a6aa;
@@ -203,31 +175,22 @@
 
                 --paper-input-container-underline: {
                     display: none;
-                }
-
-                ;
+                };
 
                 --paper-input-container-underline-focus: {
                     display: none;
-                }
-
-                ;
+                };
 
                 --paper-input-container-underline-disabled: {
                     display: none;
-                }
-
-                ;
+                };
             }
-
             paper-textarea.focused {
                 border: 1px solid var(--color-orange, #ff6a00);
             }
-
             h2.margin {
                 margin-bottom: 9px;
             }
-
             @media all and (max-width: 680px) {
                 .stats {
                     @apply --layout-vertical;
@@ -242,7 +205,6 @@
                     width: 100%;
                 }
             }
-
             @media all and (min-width: 681px) {
                 .stats {
                     @apply --layout-horizontal;
@@ -253,13 +215,11 @@
                     width: 170px;
                 }
             }
-
             @media all and (min-width: 681px) and (max-width: 980px) {
                 .progress-tile {
                     width: calc(50% - 30px);
                 }
             }
-
             @media all and (min-width: 981px) {
                 .progress-tile {
                     width: calc(33% - 30px);
