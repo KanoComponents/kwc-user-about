@@ -30,7 +30,6 @@
             }
 
             /*TODO: Use breakpoint variable*/
-
             @media all and (max-width: 680px) {
                 .content {
                     @apply --layout-around-justified;
@@ -64,9 +63,11 @@
             }
 
             .about-page .bio-text {
-                margin: 0px 50px;
                 font-size: 18px;
                 text-align: center;
+                width: calc(100% - 80px);
+                background: #FFF;
+                border-radius: 6px;
             }
 
             .about-page .bio-text pre {
@@ -88,18 +89,17 @@
             }
 
             .about-page h2 {
+                margin-top: 0;
                 margin-left: auto;
                 margin-right: auto;
             }
 
             .about-page .backdrop {
                 @apply --layout-self-stretch;
-                background: var(--color-porcelain, #e9ebec);
-                border-radius: 6px;
             }
 
             .stats {
-                padding: 25px;
+                padding: 0 25px;
             }
 
             .stats-tile {
@@ -140,7 +140,7 @@
             .progress {
                 @apply --layout-horizontal;
                 @apply --layout-wrap;
-                padding: 25px;
+                padding: 0 25px;
                 margin-bottom: 50px;
             }
 
@@ -190,6 +190,7 @@
                 border-radius: 6px;
                 padding: 10px 20px;
                 min-height: 100px;
+                background: #FFF;
 
                 --paper-input-container-input: {
                     font-family: 'bariol', sans-serif;
@@ -203,14 +204,19 @@
                 --paper-input-container-underline: {
                     display: none;
                 }
+
                 ;
+
                 --paper-input-container-underline-focus: {
                     display: none;
                 }
+
                 ;
+
                 --paper-input-container-underline-disabled: {
                     display: none;
                 }
+
                 ;
             }
 
@@ -218,14 +224,20 @@
                 border: 1px solid var(--color-orange, #ff6a00);
             }
 
+            h2.margin {
+                margin-bottom: 9px;
+            }
+
             @media all and (max-width: 680px) {
                 .stats {
                     @apply --layout-vertical;
                 }
+
                 .stats-tile {
                     @apply --layout-self-stretch;
                     margin: 10px 15px;
                 }
+
                 .progress-tile {
                     width: 100%;
                 }
@@ -235,6 +247,7 @@
                 .stats {
                     @apply --layout-horizontal;
                 }
+
                 .stats-tile {
                     margin: 0px 15px;
                     width: 170px;
@@ -263,7 +276,7 @@
             <template is="dom-if" if="[[!loading]]">
                 <div class="about-page">
                     <div class="section">
-                        <h2>Bio</h2>
+                        <h2 class="margin">Bio</h2>
                         <template is="dom-if" if="[[!editing]]">
                             <marked-element class="bio-text" markdown="[[_getBioText(bio)]]">
                                 <div slot="markdown-html"></div>
@@ -271,8 +284,8 @@
                             <kwc-soft-button on-click="_editTapped" hidden$="[[!allowEditBio]]">Edit</kwc-soft-button>
                         </template>
                         <template is="dom-if" if="[[editing]]">
-                            <paper-textarea id="bio-input" value="[[bio]]" placeholder="Write up your bio..." no-label-float focused="{{inputFocused}}"
-                                class$="[[_getInputClass(inputFocused)]]"></paper-textarea>
+                            <paper-textarea id="bio-input" value="[[bio]]" placeholder="Write up your bio..."
+                                no-label-float focused="{{inputFocused}}" class$="[[_getInputClass(inputFocused)]]"></paper-textarea>
                             <button class="save-button" on-click="_saveTapped">Save</button>
                         </template>
                     </div>
@@ -293,7 +306,7 @@
                     </div>
 
                     <div class="section">
-                        <h2>Progress</h2>
+                        <h2 class="margin">Progress</h2>
                         <div class="backdrop progress">
                             <template is="dom-repeat" items="[[_progress]]">
                                 <div class="progress-tile">
@@ -488,25 +501,25 @@
                         label: 'Make Art',
                     },
                     {
-                        id : 'makeSnake',
+                        id: 'makeSnake',
                         icon: this._getAsset('make-snake.svg'),
                         color: '#e85c5a',
                         label: 'Make Snake',
                     },
                     {
-                        id : 'makeMinecraft',
+                        id: 'makeMinecraft',
                         icon: this._getAsset('hack-minecraft.svg'),
                         color: '#89cb41',
                         label: 'Hack Minecraft',
                     },
                     {
-                        id : 'terminalQuest',
+                        id: 'terminalQuest',
                         icon: this._getAsset('terminal-quest.svg'),
                         color: '#bc1450',
                         label: 'Terminal Quest',
                     },
                     {
-                        id : 'makePong',
+                        id: 'makePong',
                         icon: this._getAsset('make-pong.svg'),
                         color: '#878787',
                         label: 'Make Pong',
