@@ -2,7 +2,6 @@ import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
-import '@kano/kwc-button/kwc-soft-button.js';
 import '@kano/kwc-icons/kwc-icons.js';
 import '@kano/kwc-style/kwc-style.js';
 import '@polymer/paper-input/paper-textarea.js';
@@ -68,23 +67,25 @@ class KwcUserAbout extends PolymerElement {
             .about-page .bio-text {
                 font-size: 18px;
                 text-align: center;
-                width: calc(100% - 80px);
-                background: #FFF;
-                border-radius: 6px;
+                width: 100%;
             }
             .about-page .bio-text pre {
                 text-align: left;
             }
+            .edit-button,
             .save-button {
                 @apply --kano-round-button;
+            }
+            .edit-button {
+                margin-bottom: 32px;
+                background-color: #9FA4A8;
+            }
+            .save-button {
+                margin-top: 20px;
                 background-color: var(--color-kano-orange, #ff6900);
             }
             .save-button:hover {
                 background-color: #c95924;
-            }
-            kwc-soft-button,
-            .save-button {
-                margin-top: 20px;
             }
             .about-page h2 {
                 margin-top: 0;
@@ -96,6 +97,7 @@ class KwcUserAbout extends PolymerElement {
             }
             .stats {
                 padding: 0 25px;
+                justify-content: space-around;
             }
             .stats-tile {
                 background: #fff;
@@ -128,37 +130,37 @@ class KwcUserAbout extends PolymerElement {
                 font-size: 14px;
             }
             .progress {
-                @apply --layout-horizontal;
-                @apply --layout-wrap;
                 padding: 0 25px;
                 margin-bottom: 50px;
+                display: flex;
+                flex-wrap: wrap;
             }
             .progress-tile {
                 background: #fff;
-                border-radius: 6px;
-                @apply --layout-horizontal;
-                padding: 10px;
-                margin: 10px 15px;
+                border-radius: 9px;
+                display: inline-flex;
+                align-items: center;
+                flex: 0 calc(50% - 26px);
+                padding: 10px 15px 10px 10px;
+                margin: 11px 13px;
             }
             .progress-tile iron-icon {
                 width: 44px;
                 height: 44px;
             }
             .progress-content {
-                @apply --layout-vertical;
-                margin-left: 10px;
-                width: 100%;
+                flex: 1;
+                margin-left: 14px;
             }
             .progress-title {
                 font-weight: bold;
-                text-transform: uppercase;
+                font-size: 18px;
             }
             .progress-bar {
                 @apply --layout-self-stretch;
                 background: var(--color-porcelain, #e9ebec);
-                width: calc(100% - 10px);
-                height: 10px;
-                border-radius: 10px;
+                height: 8px;
+                border-radius: 9px;
                 margin-top: 5px;
                 overflow: hidden;
             }
@@ -168,12 +170,12 @@ class KwcUserAbout extends PolymerElement {
                 height: 100%;
             }
             paper-textarea {
-                width: calc(100% - 100px);
+                width: calc(100% - 80px);
                 border: 1px solid #a2a6aa;
-                border-radius: 6px;
                 padding: 10px 20px;
                 min-height: 100px;
                 background: #FFF;
+                border-radius: 6px;
 
                 --paper-input-container-input: {
                     font-family: 'bariol', sans-serif;
@@ -200,6 +202,15 @@ class KwcUserAbout extends PolymerElement {
             h2.margin {
                 margin-bottom: 9px;
             }
+            .edit-bio-container {
+                width: calc(100% - 80px);
+                text-align: center;
+                background: #FFF;
+                border-radius: 6px;
+            }
+            [hidden] {
+                display: none !important;
+            }
             @media all and (max-width: 680px) {
                 .stats {
                     @apply --layout-vertical;
@@ -217,18 +228,7 @@ class KwcUserAbout extends PolymerElement {
                     @apply --layout-horizontal;
                 }
                 .stats-tile {
-                    margin: 0px 15px;
-                    width: 170px;
-                }
-            }
-            @media all and (min-width: 681px) and (max-width: 980px) {
-                .progress-tile {
-                    width: calc(50% - 30px);
-                }
-            }
-            @media all and (min-width: 981px) {
-                .progress-tile {
-                    width: calc(33% - 30px);
+                    width: 172px;
                 }
             }
         </style>
@@ -241,13 +241,15 @@ class KwcUserAbout extends PolymerElement {
             </template>
             <template is="dom-if" if="[[!loading]]">
                 <div class="about-page">
-                    <div class="section">
+                    <div class="section" hidden$="[[_computeBioVisibility(allowEditBio, bio)]]">
                         <h2 class="margin">Bio</h2>
                         <template is="dom-if" if="[[!editing]]">
-                            <marked-element class="bio-text" markdown="[[_getBioText(bio)]]">
-                                <div slot="markdown-html"></div>
-                            </marked-element>
-                            <kwc-soft-button on-click="_editTapped" hidden\$="[[!allowEditBio]]">Edit</kwc-soft-button>
+                            <div class="edit-bio-container">
+                                <marked-element class="bio-text" markdown="[[_getBioText(bio)]]">
+                                    <div slot="markdown-html"></div>
+                                </marked-element>
+                                <button class="edit-button" on-click="_editTapped" hidden\$="[[!allowEditBio]]">Edit</button>
+                            </div>
                         </template>
                         <template is="dom-if" if="[[editing]]">
                             <paper-textarea id="bio-input" value="[[bio]]" placeholder="Write up your bio..." no-label-float="" focused="{{inputFocused}}" class\$="[[_getInputClass(inputFocused)]]"></paper-textarea>
@@ -500,6 +502,12 @@ class KwcUserAbout extends PolymerElement {
         if (bio === '' && allowEditBio) {
             this.editing = true;
         }
+    }
+    _computeBioVisibility(allowEditBio, bio) {
+        if (!allowEditBio && bio === '') {
+            return true;
+        }
+        return false;
     }
 }
 
