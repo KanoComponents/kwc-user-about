@@ -33,7 +33,6 @@ class KwcUserAbout extends PolymerElement {
                 @apply --layout-wrap;
                 @apply --layout-center;
                 @apply --layout-justified;
-                min-height: calc(100vh - 300px);
             }
 
             /*TODO: Use breakpoint variable*/
@@ -504,7 +503,7 @@ class KwcUserAbout extends PolymerElement {
         }
     }
     _computeBioVisibility(allowEditBio, bio) {
-        if (!allowEditBio && bio === '') {
+        if (!allowEditBio && !bio) {
             return true;
         }
         return false;
