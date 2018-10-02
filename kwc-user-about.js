@@ -78,6 +78,10 @@ class KwcUserAbout extends PolymerElement {
             .edit-button {
                 margin-bottom: 32px;
                 background-color: #9FA4A8;
+                transition: background-color 0.1s ease;
+            }
+            .edit-button:hover {
+                background-color: #414A51;
             }
             .save-button {
                 margin-top: 20px;
