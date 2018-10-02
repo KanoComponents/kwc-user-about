@@ -2,7 +2,7 @@
   "description": "",
   "homepage": "https://github.com/denisdani/kwc-user-about",
   "name": "@kano/kwc-user-about",
-  "version": "3.0.0-beta.7",
+  "version": "3.0.0-beta.8",
   "resolutions": {
     "inherits": "2.0.3",
     "samsam": "1.1.3",
