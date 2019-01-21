@@ -1,13 +1,14 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
-import '@kano/kwc-icons/kwc-icons.js';
-import '@kano/kwc-style/kwc-style.js';
+import '@kano/styles/typography.js';
+import '@kano/styles/color.js';
+import * as button from '@kano/styles/button.js';
+import { medal, staffPick, followers } from '@kano/icons/ui.js';
 import '@polymer/paper-input/paper-textarea.js';
 import '@polymer/marked-element/marked-element.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { world } from './icons.js';
 /**
  * `kwc-user-about`
  * 
@@ -19,26 +20,33 @@ import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 class KwcUserAbout extends PolymerElement {
     static get template() {
         return html`
+        ${button.button}
+        ${button.tertiary}
         <style>
             :host {
                 display: block;
                 margin: 0 auto;
                 max-width: var(--content-width);
+                font-family: var(--font-body);
+            }
+            .btn {
+                font-size: 16.5px;
+                letter-spacing: 0.037em;
             }
             :host * {
                 box-sizing: border-box;
             }
             .content {
-                @apply --layout-horizontal;
-                @apply --layout-wrap;
-                @apply --layout-center;
-                @apply --layout-justified;
+                @apply(--layout-horizontal);
+                @apply(--layout-wrap);
+                @apply(--layout-center);
+                @apply(--layout-justified);
             }
 
             /*TODO: Use breakpoint variable*/
             @media all and (max-width: 680px) {
                 .content {
-                    @apply --layout-around-justified;
+                    @apply(--layout-around-justified);
                 }
             }
             .loading {
@@ -50,7 +58,7 @@ class KwcUserAbout extends PolymerElement {
                 margin-top: 150px;
             }
             .about-page {
-                @apply --layout-vertical;
+                @apply(--layout-vertical);
                 width: 100%;
                 font-family: 'bariol', sans-serif;
                 color: var(--color-chateau, #414a51);
@@ -58,8 +66,8 @@ class KwcUserAbout extends PolymerElement {
             .about-page .section {
                 width: 100%;
 
-                @apply --layout-vertical;
-                @apply --layout-center;
+                @apply(--layout-vertical);
+                @apply(--layout-center);
 
                 margin-bottom: 20px;
             }
@@ -70,10 +78,6 @@ class KwcUserAbout extends PolymerElement {
             }
             .about-page .bio-text pre {
                 text-align: left;
-            }
-            .edit-button,
-            .save-button {
-                @apply --kano-round-button;
             }
             .edit-button {
                 margin-bottom: 32px;
@@ -96,7 +100,7 @@ class KwcUserAbout extends PolymerElement {
                 margin-right: auto;
             }
             .about-page .backdrop {
-                @apply --layout-self-stretch;
+                @apply(--layout-self-stretch);
             }
             .stats {
                 padding: 0 25px;
@@ -105,17 +109,17 @@ class KwcUserAbout extends PolymerElement {
             .stats-tile {
                 background: #fff;
                 border-radius: 6px;
-                @apply --layout-self-stretch;
-                @apply --layout-vertical;
+                @apply(--layout-self-stretch);
+                @apply(--layout-vertical);
                 padding: 25px 0 15px 0;
             }
             .stats-content {
-                @apply --layout-horizontal;
-                @apply --layout-center-justified;
-                @apply --layout-center;
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                @apply(--layout-center);
                 margin-bottom: 10px;
             }
-            .stats-content iron-icon {
+            .stats-content .icon {
                 margin-right: 5px;
                 width: 24px;
                 height: 24px;
@@ -147,7 +151,7 @@ class KwcUserAbout extends PolymerElement {
                 padding: 10px 15px 10px 10px;
                 margin: 11px 13px;
             }
-            .progress-tile iron-icon {
+            .progress-tile .icon {
                 width: 44px;
                 height: 44px;
             }
@@ -160,7 +164,7 @@ class KwcUserAbout extends PolymerElement {
                 font-size: 18px;
             }
             .progress-bar {
-                @apply --layout-self-stretch;
+                @apply(--layout-self-stretch);
                 background: var(--color-porcelain, #e9ebec);
                 height: 8px;
                 border-radius: 9px;
@@ -216,10 +220,10 @@ class KwcUserAbout extends PolymerElement {
             }
             @media all and (max-width: 680px) {
                 .stats {
-                    @apply --layout-vertical;
+                    @apply(--layout-vertical);
                 }
                 .stats-tile {
-                    @apply --layout-self-stretch;
+                    @apply(--layout-self-stretch);
                     margin: 10px 15px;
                 }
                 .progress-tile {
@@ -228,7 +232,7 @@ class KwcUserAbout extends PolymerElement {
             }
             @media all and (min-width: 681px) {
                 .stats {
-                    @apply --layout-horizontal;
+                    @apply(--layout-horizontal);
                 }
                 .stats-tile {
                     width: 172px;
@@ -251,12 +255,12 @@ class KwcUserAbout extends PolymerElement {
                                 <marked-element class="bio-text" markdown="[[_getBioText(bio)]]">
                                     <div slot="markdown-html"></div>
                                 </marked-element>
-                                <button class="edit-button" on-click="_editTapped" hidden\$="[[!allowEditBio]]">Edit</button>
+                                <button class="btn tertiary edit-button" on-click="_editTapped" hidden\$="[[!allowEditBio]]">Edit</button>
                             </div>
                         </template>
                         <template is="dom-if" if="[[editing]]">
                             <paper-textarea id="bio-input" value="[[bio]]" placeholder="Write up your bio..." no-label-float="" focused="{{inputFocused}}" class\$="[[_getInputClass(inputFocused)]]"></paper-textarea>
-                            <button class="save-button" on-click="_saveTapped">Save</button>
+                            <button class="btn save-button" on-click="_saveTapped">Save</button>
                         </template>
                     </div>
 
@@ -266,7 +270,7 @@ class KwcUserAbout extends PolymerElement {
                             <template is="dom-repeat" items="[[_stats]]">
                                 <div class="stats-tile">
                                     <div class="stats-content">
-                                        <iron-icon icon="[[item.icon]]" style\$="color: [[item.color]];"></iron-icon>
+                                        <div class="icon" inner-h-t-m-l="[[item.icon]]" style$="fill: [[item.color]];"></div>
                                         <div class="value">[[_getStatValue(item.id, stats.*)]]</div>
                                     </div>
                                     <div class="stats-label">[[item.label]]</div>
@@ -398,30 +402,30 @@ class KwcUserAbout extends PolymerElement {
     static _computeStats() {
         const medals = {
             id: 'medals',
-            icon: 'kwc-ui-icons:medal',
+            icon: medal.innerHTML,
             color: '#ff6a00',
             label: 'medals',
         };
-        const followers = {
+        const followersStat = {
             id: 'followers',
-            icon: 'kwc-ui-icons:followers',
+            icon: followers.innerHTML,
             color: '#87c53f',
             label: 'followers',
         };
         const picks = {
             id: 'picks',
-            icon: 'kwc-ui-icons:staff-pick',
+            icon: staffPick.innerHTML,
             color: '#ffc100',
             label: 'staff picks',
         };
         const shares = {
             id: 'shares',
-            icon: 'kwc-icons:world',
+            icon: world.innerHTML,
             color: '#1093f5',
             label: 'shares',
         };
 
-        return [medals, followers, picks, shares];
+        return [medals, followersStat, picks, shares];
     }
     _getStatValue(id) {
         return this.stats[id] || '-';
